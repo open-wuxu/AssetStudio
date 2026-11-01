@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>AssetStudio · 智慧工厂数字孪生</title>
+<meta name="description" content="AssetStudio 智慧工厂数字孪生大屏演示 · WUXU 物序" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpath d='M24 3 42 13v22L24 45 6 35V13Z' fill='%2305090a' stroke='%23c8ff3d' stroke-width='2'/%3E%3Cpath d='M15 18l4 12 5-8 5 8 4-12' fill='none' stroke='%23c8ff3d' stroke-width='2.6'/%3E%3C/svg%3E" />
+<link rel="stylesheet" href="./src/styles.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "./vendor/three/three.module.js",
+    "three/addons/": "./vendor/three/addons/"
+  }
+}
+</script>
+</head>
+<body>
+<div id="app">
+
+  <canvas id="scene" aria-label="智慧工厂三维场景"></canvas>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 48 48" aria-hidden="true">
+        <defs>
+          <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#e7ff9a"/>
+            <stop offset="1" stop-color="#a8e82e"/>
+          </linearGradient>
+        </defs>
+        <path d="M24 2.6 42.6 13.3v21.4L24 45.4 5.4 34.7V13.3Z" fill="none" stroke="url(#lg)" stroke-width="1.6"/>
+        <path d="M24 9.4 36.6 16.7v14.6L24 38.6 11.4 31.3V16.7Z" fill="rgba(200,255,61,.06)" stroke="rgba(200,255,61,.35)" stroke-width="1"/>
+        <path d="M14.6 18.4 19 29.2l5-8.2 5 8.2 4.4-10.8" fill="none" stroke="url(#lg)" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="brand-text">
+        <div class="brand-line"><b>AssetStudio</b><span class="badge">TWIN</span></div>
+        <div class="brand-sub">WUXU · 物序 <i>/</i> 数字孪生工作台</div>
+      </div>
+    </div>
+
+    <nav class="tabs" id="tabs" aria-label="业务页面">
+      <button data-page="overview" class="tab active"><span>总览</span><i>OVERVIEW</i></button>
+      <button data-page="production" class="tab"><span>生产</span><i>PRODUCTION</i></button>
+      <button data-page="maintenance" class="tab"><span>运维</span><i>MAINTENANCE</i></button>
+      <button data-page="inspection" class="tab"><span>检测</span><i>INSPECTION</i></button>
+      <button data-page="logistics" class="tab"><span>物流</span><i>LOGISTICS</i></button>
+    </nav>
+
+    <div class="top-right">
+      <div class="sys-chip"><i class="pulse-dot"></i>MQTT 在线</div>
+      <div class="sys-chip ghost">虚拟工厂 A · 车间 A</div>
+      <div class="clock"><span id="clock-time">14:32:06</span><i>UTC+8</i></div>
+      <button class="btn primary" id="btn-auto" title="播放 30 秒自动演示"><span class="btn-ico" id="auto-ico">❚❚</span><span id="auto-label">暂停演示</span></button>
+      <button class="btn" id="btn-reset" title="回到总览视角">重置视角</button>
+    </div>
+  </header>
+
+  <aside class="left-panel">
+    <div class="panel-block tree-block">
+      <div class="block-head">
+        <div><span class="eyebrow">ASSET TREE</span><span class="block-title">资产结构</span></div>
+        <span class="count" id="asset-count">128</span>
+      </div>
+      <div class="tree" id="asset-tree"></div>
+    </div>
+
+    <div class="panel-block kpi-block">
+      <div class="block-head">
+        <div><span class="eyebrow">SYSTEM</span><span class="block-title">运行指标</span></div>
+        <span class="live-tag">LIVE</span>
+      </div>
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </div>
+
+    <div class="panel-block event-block">
+      <div class="block-head">
+        <div><span class="eyebrow">EVENTS</span><span class="block-title">最近事件</span></div>
+        <span class="mini-count" id="event-count">3</span>
+      </div>
+      <div class="event-list" id="event-list"></div>
+    </div>
+
+    <div class="panel-block pipe-block">
+      <div class="block-head">
+        <div><span class="eyebrow">DATA PIPELINE</span><span class="block-title">数据管道</span></div>
+        <span class="live-tag">24 ms</span>
+      </div>
+      <div class="rows">
+        <div class="row"><span class="r-label">MQTT 消息 / 秒</span><span class="r-val accent">1,284</span></div>
+        <div class="row"><span class="r-label">写入延迟</span><span class="r-val">24 <small>ms</small></span></div>
+        <div class="row"><span class="r-label">在线网关</span><span class="r-val">6 <small>/ 6</small></span></div>
+      </div>
+    </div>
+
+    <div class="panel-foot">
+      <span class="sq"></span> 资产即数据 · 数据即视图
+    </div>
+  </aside>
+
+  <aside class="right-panel">
+    <div class="right-scroll" id="right-scroll">
+      <div id="device-card"></div>
+      <div id="page-panel"></div>
+      <section class="card system-card">
+        <div class="card-head"><div><span class="eyebrow">ENVIRONMENT</span><span class="card-title">运行环境</span></div><span class="card-chip teal">稳定</span></div>
+        <div class="rows">
+          <div class="row"><span class="r-label">车间温度</span><span class="r-val">24.6 <small>°C</small></span></div>
+          <div class="row"><span class="r-label">相对湿度</span><span class="r-val">48 <small>%</small></span></div>
+          <div class="row"><span class="r-label">洁净等级</span><span class="r-val">Class 10k</span></div>
+        </div>
+      </section>
+      <section class="card system-card">
+        <div class="card-head"><div><span class="eyebrow">SYSTEM</span><span class="card-title">数据接入</span></div><span class="card-chip teal">正常</span></div>
+        <div class="rows">
+          <div class="row"><span class="r-label">MQTT Broker</span><span class="r-val accent">已连接</span></div>
+          <div class="row"><span class="r-label">消息吞吐</span><span class="r-val">1,284 <small>msg/s</small></span></div>
+          <div class="row"><span class="r-label">时序写入</span><span class="r-val">24 <small>ms</small></span></div>
+        </div>
+      </section>
+    </div>
+    <div class="panel-foot">
+      <span class="sim-dot"></span> 模拟数据 · 仅用于产品演示
+    </div>
+  </aside>
+
+  <div class="stage" id="stage">
+    <div class="corner tl" aria-hidden="true"></div>
+    <div class="corner tr" aria-hidden="true"></div>
+    <div class="corner bl" aria-hidden="true"></div>
+    <div class="corner br" aria-hidden="true"></div>
+
+    <div class="stage-top-left">
+      <span class="eyebrow">DIGITAL TWIN / LIVE</span>
+      <span class="stage-title" id="stage-title">车间 A · 产线 01</span>
+    </div>
+
+    <div class="stage-top-right">
+      <span class="stage-chip" id="camera-mode"><i></i>自动演示 · AUTO</span>
+    </div>
+
+    <div class="labels" id="labels" aria-hidden="true"></div>
+
+    <div class="reticle" id="reticle" aria-hidden="true">
+      <i class="r tl"></i><i class="r tr"></i><i class="r bl"></i><i class="r br"></i>
+      <span class="reticle-tag" id="reticle-tag">ARM-06</span>
+    </div>
+
+    <div class="stage-bottom-left">
+      <div class="sim-note"><i></i>模拟数据 · 演示环境</div>
+      <div class="scalebar"><span></span><b>5 m</b></div>
+    </div>
+
+    <div class="stage-bottom-right">
+      <div class="hint" id="stage-hint">拖拽旋转 · 滚轮缩放 · 点击设备查看</div>
+    </div>
+  </div>
+
+  <footer class="bottombar">
+    <div class="legend">
+      <span><i class="st run"></i>运行</span>
+      <span><i class="st idle"></i>待机</span>
+      <span><i class="st warn"></i>告警</span>
+      <span><i class="st off"></i>离线</span>
+    </div>
+
+    <div class="timeline" id="timeline">
+      <div class="tl-track">
+        <div class="tl-buffer"></div>
+        <div class="tl-progress" id="tl-progress"></div>
+        <div class="tl-head" id="tl-head"></div>
+        <div class="tl-marks" id="tl-marks"></div>
+      </div>
+      <div class="tl-labels" id="tl-labels"></div>
+    </div>
+
+    <div class="perf">
+      <span id="fps">60</span> FPS
+      <i>/</i>
+      <span id="drawcalls">—</span> DRAW
+      <i>/</i>
+      <span id="tris">—</span> TRI
+    </div>
+  </footer>
+
+  <div class="endcard" id="endcard">
+    <div class="endcard-inner">
+      <svg class="logo big" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 2.6 42.6 13.3v21.4L24 45.4 5.4 34.7V13.3Z" fill="none" stroke="url(#lg)" stroke-width="1.4"/>
+        <path d="M14.6 18.4 19 29.2l5-8.2 5 8.2 4.4-10.8" fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="endcard-kicker">WUXU · PHYSICAL WORLD SOFTWARE</div>
+      <h1>让物理世界<br /><em>可见、可知、可模拟</em></h1>
+      <div class="endcard-line"></div>
+      <div class="endcard-meta">
+        <span>AssetStudio · 智慧工厂数字孪生</span>
+        <span class="endcard-badge">模拟数据演示</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="loader" id="loader">
+    <div class="loader-mark">
+      <svg class="logo big" viewBox="0 0 48 48" aria-hidden="true">
+        <path d="M24 2.6 42.6 13.3v21.4L24 45.4 5.4 34.7V13.3Z" fill="none" stroke="url(#lg)" stroke-width="1.4"/>
+        <path d="M14.6 18.4 19 29.2l5-8.2 5 8.2 4.4-10.8" fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="loader-title">正在构建数字孪生场景</div>
+    <div class="loader-bar"><i id="loader-fill"></i></div>
+    <div class="loader-sub">ASSETSTUDIO / TWINSTUDIO · V0.1</div>
+  </div>
+
+</div>
+<script type="module" src="./src/main.js"></script>
+</body>
+</html>

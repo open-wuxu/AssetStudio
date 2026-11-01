@@ -1,0 +1,17 @@
+{
+  "name": "assetstudio-factory-twin-demo",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "AssetStudio 智慧工厂数字孪生大屏 Demo",
+  "scripts": {
+    "dev": "node scripts/server.mjs",
+    "record": "node scripts/record.mjs",
+    "stills": "node scripts/still.mjs",
+    "interact": "node scripts/interact.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.16.0",
+    "three": "^0.186.0"
+  }
+}

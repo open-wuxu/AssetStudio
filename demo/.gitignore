@@ -1,0 +1,11 @@
+node_modules/
+output/frames/
+output/benchframes/
+output/stills/
+output/interactive/
+output/test-*.mp4
+output/test-frame.png
+bench.html
+.DS_Store
+.media
+output
