@@ -18,6 +18,8 @@
 | [`output/preview-05-agv.png`](output/preview-05-agv.png) | 关键画面：AGV 接驳与配送 |
 | [`output/preview-06-endcard.png`](output/preview-06-endcard.png) | 关键画面：片尾品牌页 |
 
+> 在线观看：[Bilibili · AssetStudio 智慧工厂数字孪生 Demo](https://www.bilibili.com/video/BV1G8xb6iEmj/)
+
 ---
 
 ## 运行网页

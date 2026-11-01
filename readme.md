@@ -132,6 +132,18 @@ AssetStudio 的核心竞争力体现在 UI/UX 上。整体采用「左侧主导�
 
 ---
 
+## 演示视频
+
+**智慧工厂数字孪生 Demo** —— 基于 Three.js 构建的「虚拟工厂 A / 车间 A / 产线 01」可交互演示（2K / 60fps / 30s，全部为模拟数据）。
+
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1G8xb6iEmj&page=1&high_quality=1&danmaku=0" scrolling="no" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="480"></iframe>
+
+> 部分平台（如 GitHub）会过滤 Markdown 中的 `<iframe>`。若上方播放器未显示，请直接访问：[Bilibili · AssetStudio 智慧工厂数字孪生 Demo](https://www.bilibili.com/video/BV1G8xb6iEmj/)
+
+页面源码与运行方式见 [`demo/README.md`](demo/README.md)。
+
+---
+
 ## 技术架构
 
 AssetStudio 从第一天就采用模块化、可扩展的架构，但第一版**不过度微服务化**。
