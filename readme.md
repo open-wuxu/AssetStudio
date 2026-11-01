@@ -8,9 +8,27 @@ by WUXU · 物序
 
 让每一个物理资产都拥有数字身份，让复杂的设备系统变得可见、可管理、可理解。
 
-[项目简介](#项目简介) · [核心能力](#核心能力) · [设计理念](#设计理念) · [技术架构](#技术架构) · [路线图](#路线图) · [产品文档](docs/prd.md)
+[演示视频](#演示视频) · [项目简介](#项目简介) · [核心能力](#核心能力) · [设计理念](#设计理念) · [技术架构](#技术架构) · [路线图](#路线图) · [产品文档](docs/prd.md)
 
 </div>
+
+---
+
+## 演示视频
+
+<div align="center">
+
+[![▶ 点击播放：AssetStudio 智慧工厂数字孪生 Demo](docs/assets/demo-video-cover.jpg)](https://www.bilibili.com/video/BV1G8xb6iEmj/)
+
+**点击封面直接播放** · [Bilibili · AssetStudio 智慧工厂数字孪生 Demo](https://www.bilibili.com/video/BV1G8xb6iEmj/)
+
+基于 Three.js 构建的「虚拟工厂 A / 车间 A / 产线 01」可交互演示 · 2K / 60fps / 30s · 全部为模拟数据
+
+</div>
+
+<iframe src="https://player.bilibili.com/player.html?bvid=BV1G8xb6iEmj&page=1&high_quality=1&danmaku=0" scrolling="no" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="480"></iframe>
+
+> 在某些支持 HTML 的 Markdown 预览器中，上方 `<iframe>` 可内嵌播放；GitHub 会过滤 `<iframe>`，此时请点击封面或直链跳转 Bilibili 观看。页面源码与运行方式见 [`demo/README.md`](demo/README.md)。
 
 ---
 
@@ -129,18 +147,6 @@ AssetStudio 的核心竞争力体现在 UI/UX 上。整体采用「左侧主导�
 ### Dashboard Studio · Dashboard 工作台
 
 拖拽组件、配置数据源、绑定资产与数据点、实时预览、保存与发布。第一版计划支持数值卡片、折线图、仪表盘、状态指示器、设备卡片、告警列表、设备表格、柱状图、设备拓扑与文本组件。
-
----
-
-## 演示视频
-
-**智慧工厂数字孪生 Demo** —— 基于 Three.js 构建的「虚拟工厂 A / 车间 A / 产线 01」可交互演示（2K / 60fps / 30s，全部为模拟数据）。
-
-<iframe src="https://player.bilibili.com/player.html?bvid=BV1G8xb6iEmj&page=1&high_quality=1&danmaku=0" scrolling="no" frameborder="no" framespacing="0" allowfullscreen="true" width="100%" height="480"></iframe>
-
-> 部分平台（如 GitHub）会过滤 Markdown 中的 `<iframe>`。若上方播放器未显示，请直接访问：[Bilibili · AssetStudio 智慧工厂数字孪生 Demo](https://www.bilibili.com/video/BV1G8xb6iEmj/)
-
-页面源码与运行方式见 [`demo/README.md`](demo/README.md)。
 
 ---
 
